@@ -1,6 +1,15 @@
+[project]
+    authors         = [{ name = "Michael Hansen", email = "mike@rhasspy.org" }]
+    dependencies    = ["setuptools>=75.8.0", "wheel>=0.45.1"]
+    description     = "Phonemization library used by Piper text to speech system, fixed for proper wheels"
+    name            = "piper-phonemize-fix"
+    requires-python = ">=3.10"
+    urls            = { "Repository" = "https://github.com/easyaspi314/piper-phonemize-fix" }
+    version         = "1.2.1"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "pybind11>=2.10.0",
-]
-build-backend = "setuptools.build_meta"
+    build-backend = "scikit_build_core.build"
+    requires      = ["scikit-build-core", "pybind11>=2.13.6"]
+
+[tool.setuptools]
+    zip-safe             = false

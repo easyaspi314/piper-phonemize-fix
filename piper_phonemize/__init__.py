@@ -3,6 +3,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
+import os
+
+_DIR = Path(__file__).parent
+
+if os.name == 'nt':
+    _DLLPATH = os.add_dll_directory(_DIR / "lib")
+
 from piper_phonemize_cpp import (
     phonemize_espeak as _phonemize_espeak,
     phonemize_codepoints as _phonemize_codepoints,
@@ -14,7 +21,10 @@ from piper_phonemize_cpp import (
     tashkeel_run as _tashkeel_run,
 )
 
-_DIR = Path(__file__).parent
+if os.name == 'nt':
+    _DLLPATH.close()
+    del _DLLPATH
+
 _TASHKEEL_MODEL = _DIR / "libtashkeel_model.ort"
 
 

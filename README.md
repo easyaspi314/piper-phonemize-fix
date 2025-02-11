@@ -1,5 +1,13 @@
 # Piper Phonemization Library
 
+This version has the following fixes primarily for Python, based on @lucaspar's PR:
+
+- Fixes for compiling on ANY version of Python
+- Better (albeit not perfect) packaging
+- Simplified build process for the Python module
+- Cleaner folder layout for Python installations
+- Windows support
+
 Converts text to phonemes for [Piper](https://github.com/rhasspy/piper).
 
 When using eSpeak phonemes, requires an [espeak-ng fork](https://github.com/rhasspy/espeak-ng) with `espeak_TextToPhonemesWithTerminator` function.
@@ -40,11 +48,16 @@ See `src/python_test.py` for a Python example.
 
 ## Building
 
-Use Docker:
+For the command-line tool:
 
-``` sh
-docker buildx build . -t piper-phonemize --output 'type=local,dest=dist'
+```sh
+cmake -Bbuild .
+cmake --build build --config Release
+cmake --install build
 ```
 
-Find library and Python wheels in `dist/`
+For the Python wheel:
 
+```sh
+python -m pip install .
+```

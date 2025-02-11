@@ -16,7 +16,8 @@ htmlcov
 /*.so
 /test
 
-/lib/
-/download/
-/cmake/
-/_install/
+/lib
+/download
+/cmake
+/_install
+/install
