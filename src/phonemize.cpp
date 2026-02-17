@@ -7,6 +7,7 @@
 
 #include "phonemize.hpp"
 #include "uni_algo.h"
+#include "shared.hpp"
 
 namespace piper {
 
@@ -19,7 +20,7 @@ phonemize_eSpeak(std::string text, eSpeakPhonemeConfig &config,
                  std::vector<std::vector<Phoneme>> &phonemes) {
 
   auto voice = config.voice;
-  int result = espeak_SetVoiceByName(voice.c_str());
+  int result = ESPEAK_LOCK_WRAP(espeak_SetVoiceByName(voice.c_str()));
   if (result != 0) {
     throw std::runtime_error("Failed to set eSpeak-ng voice");
   }
@@ -40,10 +41,10 @@ phonemize_eSpeak(std::string text, eSpeakPhonemeConfig &config,
 
   while (inputTextPointer != NULL) {
     // Modified espeak-ng API to get access to clause terminator
-    std::string clausePhonemes(espeak_TextToPhonemesWithTerminator(
+    std::string clausePhonemes(ESPEAK_LOCK_WRAP(espeak_TextToPhonemesWithTerminator(
         (const void **)&inputTextPointer,
         /*textmode*/ espeakCHARS_AUTO,
-        /*phonememode = IPA*/ 0x02, &terminator));
+        /*phonememode = IPA*/ 0x02, &terminator)));
 
     // Decompose, e.g. "ç" -> "c" + "̧"
     auto phonemesNorm = una::norm::to_nfd_utf8(clausePhonemes);

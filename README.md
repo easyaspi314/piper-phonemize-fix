@@ -7,6 +7,7 @@ This version has the following fixes primarily for Python, based on @lucaspar's 
 - Simplified build process for the Python module
 - Cleaner folder layout for Python installations
 - Windows support
+- Support for Python 3.14t
 
 Converts text to phonemes for [Piper](https://github.com/rhasspy/piper).
 

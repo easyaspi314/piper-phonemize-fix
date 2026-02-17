@@ -3,6 +3,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <mutex>
 
 #include <espeak-ng/speak_lib.h>
 #include <pybind11/pybind11.h>
@@ -11,6 +12,7 @@
 #include "phoneme_ids.hpp"
 #include "phonemize.hpp"
 #include "tashkeel.hpp"
+#include "shared.hpp"
 
 #define STRINGIFY(x) #x
 #define MACRO_STRINGIFY(x) STRINGIFY(x)
@@ -29,13 +31,15 @@ std::map<std::string, tashkeel::State> tashkeelStates;
 std::vector<std::vector<piper::Phoneme>>
 phonemize_espeak(std::string text, std::string voice, std::string dataPath) {
   if (!eSpeakInitialized) {
-    int result =
-        espeak_Initialize(AUDIO_OUTPUT_SYNCHRONOUS, 0, dataPath.c_str(), 0);
-    if (result < 0) {
-      throw std::runtime_error("Failed to initialize eSpeak");
+    std::lock_guard<std::mutex> lock(espeak_lock);
+    if (!eSpeakInitialized) {
+      int result =
+          espeak_Initialize(AUDIO_OUTPUT_SYNCHRONOUS, 0, dataPath.c_str(), 0);
+      if (result < 0) {
+        throw std::runtime_error("Failed to initialize eSpeak");
+      }
+      eSpeakInitialized = true;
     }
-
-    eSpeakInitialized = true;
   }
 
   piper::eSpeakPhonemeConfig config;
@@ -117,7 +121,7 @@ std::string tashkeel_run(std::string modelPath, std::string text) {
 
 // ----------------------------------------------------------------------------
 
-PYBIND11_MODULE(piper_phonemize_cpp, m) {
+PYBIND11_MODULE(piper_phonemize_cpp, m, py::mod_gil_not_used()) {
   m.doc() = R"pbdoc(
         Pybind11 example plugin
         -----------------------

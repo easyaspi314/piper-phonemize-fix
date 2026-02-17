@@ -5,11 +5,11 @@
     name            = "piper-phonemize-fix"
     requires-python = ">=3.10"
     urls            = { "Repository" = "https://github.com/easyaspi314/piper-phonemize-fix" }
-    version         = "1.2.1"
+    version         = "1.2.2"
 
 [build-system]
     build-backend = "scikit_build_core.build"
-    requires      = ["scikit-build-core", "pybind11>=2.13.6"]
+    requires      = ["scikit-build-core", "pybind11>=3.0.1"]
 
 [tool.setuptools]
     zip-safe             = false
