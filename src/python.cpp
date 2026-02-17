@@ -31,7 +31,7 @@ std::map<std::string, tashkeel::State> tashkeelStates;
 std::vector<std::vector<piper::Phoneme>>
 phonemize_espeak(std::string text, std::string voice, std::string dataPath) {
   if (!eSpeakInitialized) {
-    std::lock_guard<std::mutex> lock(espeak_lock);
+    std::lock_guard<std::mutex> lock(espeak_lock());
     if (!eSpeakInitialized) {
       int result =
           espeak_Initialize(AUDIO_OUTPUT_SYNCHRONOUS, 0, dataPath.c_str(), 0);

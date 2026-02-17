@@ -9,10 +9,10 @@
 
 #include <mutex>
 
-extern std::mutex espeak_lock;
+extern PIPERPHONEMIZE_EXPORT std::mutex &espeak_lock();
 
 #define ESPEAK_LOCK_WRAP(...) ([&]() { \
-    std::lock_guard<std::mutex> lock_(espeak_lock); \
+    std::lock_guard<std::mutex> lock_(espeak_lock()); \
     return __VA_ARGS__; \
 })()
 
